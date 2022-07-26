@@ -58,8 +58,8 @@ export const useUserStore = defineStore("userStore",
             },
             
             async logoutUser(){
-                const database = userDataStore;
-                 database.$reset();
+                const database = userDataStore();
+                database.$reset();
                 try {
                     await signOut(auth);
                     this.userData = null;
