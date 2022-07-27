@@ -1,27 +1,53 @@
 <template>
-  <div>
-    <h1>hola mundo</h1>
-    <nav v-if="!userStore.loadingSession">
-      <router-link to="/" v-if="userStore.userData">Home </router-link> |
-      <router-link to="/login" v-if="!userStore.userData">login </router-link> |
-      <router-link to="/register" v-if="!userStore.userData">register </router-link>| 
-      <!-- <router-link to="/editar/dfvdf" v-if="userStore.userData">editar </router-link> <router-link to="/register" v-if="!userStore.userData">register </router-link>  -->
+  <a-layout>
+    <a-layout-header v-if="!userStore.loadingSession" >
+      <a-menu 
+        v-model:selectedKeys="selectedKeys"
+        theme="dark"
+        mode="horizontal"
+        :style="{ lineHeight: '64px' }">
 
-      <button @click="userStore.logoutUser">logout</button>
-    </nav>
-    <div v-else>
-      loading user....
-  </div>
-    <router-view></router-view>
+        <a-menu-item v-if="userStore.userData" key="home">
+          <router-link to="/">Home </router-link>
+        </a-menu-item>
+        <a-menu-item v-if="!userStore.userData" key="login">
+          <router-link to="/login">login </router-link>
+        </a-menu-item>
+        <a-menu-item v-if="!userStore.userData" key="register">
+          <router-link to="/register">register </router-link>
+        </a-menu-item>
+        <a-menu-item 
+        @click="userStore.logoutUser" 
+        v-if="userStore.userData"
+        key="logout">
+          logout
+        </a-menu-item>
+      </a-menu>
+    </a-layout-header>
+
+    <a-layout-content>
+      <div v-if="userStore.loadingSession">
+        loading user....
+      </div>
+      <router-view></router-view>
+    </a-layout-content>
     
-  </div>
+  </a-layout>
 </template>
 
 <script setup>
   import { useUserStore } from './stores/user';
+  import { ref, watch } from "vue"
+  import {useRoute} from "vue-router"
+
   const userStore = useUserStore();
+ const route = useRoute();
+  const selectedKeys = ref ([])
+
+  watch(
+    () => route.name,
+    () => {
+      selectedKeys.value=[route.name];
+    }
+  )
 </script>
-
-<style lang="scss" scoped>
-
-</style>

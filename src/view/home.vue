@@ -1,12 +1,15 @@
 <template>
     <div>
         <h1>home</h1>
+        <a-button type="primary">Primary Button</a-button>
+        
         <form @submit.prevent="hanleSubmit">
             <input type="text" placeholder="Ingrese url" v-model="url">
             <button type="submit">agregar</button>
         </form>
         
-        <p>{{user.userData.email}}</p>
+        <p v-if="user.userData.email">{{user.userData.email}}</p>
+        <p v-else>no hay acces a esta parte</p>
         <p v-if="dataBaseStore.loadingDoc">loading doc....</p>
         <ul v-else>
             <li v-for="item of dataBaseStore.documents" key="item.id">

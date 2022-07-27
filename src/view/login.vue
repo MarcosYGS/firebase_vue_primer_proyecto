@@ -6,6 +6,7 @@
             <input type="password" plaseholder="ingrese paspassword" v-model="password">
             <button type="submit" :disabled="userStore.loadingUser">logear usuario</button>
         </form>
+        <button @click="userStore.googleAuth()">google</button>
     </div>
 </template>
 

@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import {createUserWithEmailAndPassword,
     onAuthStateChanged,
+    signInWithPopup,
     signInWithEmailAndPassword,
     signOut,
+    GoogleAuthProvider,
 
 } from "firebase/auth"
 
@@ -19,6 +21,23 @@ export const useUserStore = defineStore("userStore",
             loadingSession: false,
         }),
         actions: {
+            async googleAuth(){
+                try {
+                    const provider = new  GoogleAuthProvider();
+                    const result = await signInWithPopup(auth, provider);
+                    const user= result.user;
+                    
+                    this.userData ={
+                        email: user.email, 
+                        password: "autentificado por google",
+                        uid : user.uid,
+                    };
+
+                    router.push("/");
+                } catch (error) {
+                    console.log(error)
+                }
+            },
             async registerUser (email, password) {
                 this.loadingUser =true;
                 try {
